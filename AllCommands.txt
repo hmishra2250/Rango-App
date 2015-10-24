@@ -1,0 +1,60 @@
+python --version 	//checkign version
+python -c "import django; print(django.get_version())"		//version of django
+django-admin.py startproject him			// created the project named as him !
+python manage.py runserver		//for running the server
+python manage.py migrate 		//first time migrate ... to create the required dbs !
+python manage.py runserver ip:port 			//runs server on a particualr port and ip
+//A django project is a collection of Applications and configurations  that together make up a webpage or website
+python manage.py startapp rango
+HttpResponse('String') 		//returns the given string as an http response to the page
+from rango import views 		//import all fn of views in the App url.py
+from django.conf.urls import patterns,url 	//import tools for pattern matching
+r'^$'		//Mathches an empty string !
+urlpatterns //a tuple containing a series of call to url function "django.conf.urls.url() fn"
+dnago.conf.urls.url() ::// Arguments 1.Regex 2. Views to be called 3. optional name
+Django templates engine provides a powerful mini language for defining the user facing level of app withou prior knowledge of HTML
+https://docs.djangoproject.com/en/1.7/topics/templates/ 	//Basic idea about the django templates !!!!
+templates //design made easier by templates ... they handle all the repititions
+creating template dir under <workspace>/project_name
+dynamic paths // to make a project that works on every system withou problems of paths !
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+TEMPLATE_PATH = os.path.join(BASE_DIR,'templates')
+TEMPLATE_DIRS = (TEMPLATE_PATH,)		// Deprecated .. new rule is to put them in corresponding dict
+index.html in templates/rango directory ... for simple html file
+"{{ var }}" django teplate var
+from django.shortcuts import render ... in views.py for rendering html pages
+rener takes 1.request 2. template file name 3. context dict
+context dict is passed in to the html page ... and rendered by the template engine ... as dictionary then attributr or method llokup and then numeric index lookup
+To serve static media .. set STATIC_PATH , STATIC_URL  and STATICFILES_DIRS on setting.py
+STATIC_URL defines base url to which django app will look for static files
+STATICFILES_DIRS defines location of newly created static folder in disk // requires an absoulte path lik TEMPLATE_DIRS
+to add static files .... first tell template sys : By adding {% load staticfiles %} and then in tage img src = "{% static "name" %}"
+To add othere static fiels : 1.".css" file <link rel= "stylesheet" href = "{% static "css/abc.css" %}" /> 2. ".js" file <script src = "{% static "js/abc.js" %} "><script>
+ <!---  line 33-38 the DEBUG variable in settings.py, lets you control the output when an error occurs, and is used for debugging. When the application is deployed it is not secure to leave DEBUG equal to True. When you set DEBUG to be False, then you will need to set the ALLOWED_HOSTS variable in settings.py, when running on your local machine this would be 127.0.0.1. You will also need to update the project urls.py file:
+
+from django.conf import settings # New Import
+from django.conf.urls.static import static # New Import
+if not settings.DEBUG:
+        urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) -->
+To upload staic files .. development media server ... which can be used with uploading forms :: create media dirs in root directory :: in rango/urls.py add :: from django.conf import settings :: if settings.debug: urlpatterns += patterns('django.views.static',(r'^media/(?P<path>.*)','serve',{'document_root' : settings.MEDIA_ROOT} ), ) to access static files
+Database part is handled by django using Object Relation mapping functions (ORM) 
+Databses will inherit from django.db.models.Model 
+CharField IntegerField URLField DateField ::datetime.date of pyth :: default = 'value' or null = True optionals
+ForeignKey :: One to many relationship OnetoOneField:: one to ont ManyToManField :: Many to many !!
+Django automatically creates an ID  for each table ... i.e we need not ecplicitly define Primary KEy 
+Python mange.py createsuperuser to create superuser !!! makemigrations to apply db and migrate to migrate
+Django Shell !! python mange.py shell ... loads the required settings for user of django !!
+"ModelNAme".Objects.all() returns list of objects of that type
+Creating an object :: Just create a var of that type .. to save .... var.save() !! IMP!!!\
+Configuring the admin interface to show models ... open admin.py ... import models ...admin.site,register(models)
+poplulation scrip is good for working in teams so that everyone has similar datas ! Copied from tangowithdjango :P
+Models.objects.get_or_create() method  check if the object doesnot exist and then create it !! Save repitions and time ! :)
+list_display option in admin.py to display list of attributes in admin site !!
+To create a data driven page : 1.Import the required models in view.py 2. Quesry the model in required view 3.pass the result from your model into the template's context 4.Setup tempalte to presen the data 5.map a url to the view
+Category.Objects.order_by('arg')[:5] 	//select top 5 categories order_by sorts the list 
+Slugify function for clear urls !# from django.template.defaultfilters import slugify
+def save(self, *args,**kwargs): if not self.id: self.s = slugify(self.q) super(test,self).save(*args,**kwargs)	## Custom function that defines link unly when object is created .. after that it remains constant !
+**** WE can remove if part ... but that may lead to broken links when changing q !
+prepopulated_fields to map some field to some others so that automatically generate the required field
+User obect is provided to templates by default by context !
+## If u need more secure cookies ,use Session based cookies.
